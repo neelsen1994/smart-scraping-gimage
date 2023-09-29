@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
+import argparse
 import os
 import requests
 from io import BytesIO
@@ -71,6 +72,24 @@ def get_img_frm_google(wd, url, thmb_cl, img_cl, delay, max_imgs):
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser(description='Example script with command-line arguments')
+
+    # Define command-line arguments
+    parser.add_argument('--url', type=str, help='URL of the Google search page')
+    parser.add_argument('--thumbnail_class', type=str, help='Thumbnail class to scroll through images')
+    parser.add_argument('--image_class', type=str, help='Image class to locate the source')
+    parser.add_argument('--num', type=int, help='Number of images to download')
+
+    # Parse the command-line arguments
+    args = parser.parse_args()
+
+    # Access the values of the arguments
+    url = args.url
+    thmb_class = args.thumbnail_class
+    img_class = args.image_class
+    num = args.num
+
+
     options = webdriver.ChromeOptions()
     options.add_argument("start-maximized")
     options.add_argument("--no-sandbox")
@@ -84,13 +103,15 @@ if __name__ == "__main__":
 
     WebDriverWait(wd, 20).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="W0wltc"]/div'))).click()
 
-    # Change the url, and classes according to the search by inspecting the browser
-    url = "https://www.google.com/search?sca_esv=569281890&rlz=1C1YTUH_deDE1061DE1062&sxsrf=AM9HkKl4dK6hCkFAxiK2BXnqxS4qrnym8Q:1695940472165&q=cats&tbm=isch&source=lnms&sa=X&ved=2ahUKEwj495zLrs6BAxXsXEEAHUEgA-8Q0pQJegQIChAB&biw=1280&bih=651&dpr=1.5#imgrc=eAP244UcF5wdYM"
-    thmb_class = "Q4LuWd"
-    img_class = "r48jcc"
+    # Change the url, and classes according to the search by inspecting the browser (hardcoded)
+    #url = "https://www.google.com/search?sca_esv=569424800&hl=en&sxsrf=AM9HkKnkQ8ye0uvkQipNF7XTVIXuBK5pTQ:1695984351916&q=dogs&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiRq9yG0s-BAxVlVeUKHZ_KDGEQ0pQJegQIDhAB&biw=1280&bih=651&dpr=1.5"
+    #thmb_class = "Q4LuWd"
+    #img_class = "r48jcc"
 
-    img_urls = get_img_frm_google(wd, url, thmb_class, img_class,1, 20)
+    img_urls = get_img_frm_google(wd, url, thmb_class, img_class,1, num)
     
+    wd.quit()
+
     for i, uri in enumerate(img_urls):
         print(i+1)
         print(uri)
@@ -105,4 +126,4 @@ if __name__ == "__main__":
         print(path)
         download_image(uri, path)
 
-    wd.quit()
+    
