@@ -1,13 +1,13 @@
-# smart-scraping-gimage
+# Google image download automation
 A Python script to automate the download of Google images.
 
 ![Webscraper](resources/webscraper.png)
 
-# Overview
+## Overview
 
 Instead of manually searching Google for images and downloading them one by one, a Python script can automate the process and download several images in a short period of time.
 
-# Getting started
+## Getting started
 
 * Clone the repository
 * Install the dependencies required to run the source code.
